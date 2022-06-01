@@ -32,6 +32,20 @@ const AdminPrivateRoute = ({...rest}) => {
         return Promise.reject(error);
     });
     
+    axios.interceptors.response.use(function(response) {
+      return response;
+    }, function(error){
+      if(error.response.status === 403){
+        swal("Forbidden", error.response.data.message, "warning");
+        history.push("/403");
+      }
+      else if(error.response.status === 404){
+        swal("404 Error", "page not found", "warning");
+        history.push("/404");
+      }
+      return Promise.reject(error);
+    }
+    );
 
     if(loading){
         return <h1 className="text-center">Loading...</h1>

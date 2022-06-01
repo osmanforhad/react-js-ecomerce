@@ -6,6 +6,8 @@ import Home from "./components/frontend/Home";
 import MasterLayout from "./layouts/admin/MasterLayout";
 import axios from 'axios';
 import AdminPrivateRoute from "./AdminPrivateRoute";
+import Page403 from "./components/errors/Page403";
+import Page404 from "./components/errors/Page404";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -24,6 +26,9 @@ function App() {
       <Router>
         <Switch>
         <Route exact path="/" component={Home} />
+
+        <Route path="/403" component={Page403} />
+        <Route path="/404" component={Page404} />
         
         <Route path="/login">
           {localStorage.getItem('auth_token') ? <Redirect to="/" /> : <Login />}
