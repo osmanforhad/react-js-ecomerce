@@ -30,7 +30,12 @@ const Login = () => {
                     localStorage.setItem('auth_token', response.data.token);
                     localStorage.setItem('auth_name', response.data.username);
                     swal("Success", response.data.message, "success");
-                    history.push("/");
+                    if(response.data.role === 'admin'){
+                        history.push("/admin/dashboard");
+                    }
+                    else {
+                        history.push("/");
+                    }
                 }
                 else if(response.data.status === 401){
                     swal("Warning", response.data.message, "warning");
