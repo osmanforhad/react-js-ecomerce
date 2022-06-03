@@ -31,6 +31,40 @@ const Sidebar = () => {
             </div>
             Profile
           </Link>
+
+          <Link
+            className="nav-link collapsed"
+            to="#"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseProduct"
+            aria-expanded="false"
+            aria-controls="collapseProduct"
+          >
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-columns"></i>
+            </div>
+            Products
+            <div className="sb-sidenav-collapse-arrow">
+              <i className="fas fa-angle-down"></i>
+            </div>
+          </Link>
+          <div
+            className="collapse"
+            id="collapseProduct"
+            aria-labelledby="headingOne"
+            data-bs-parent="#sidenavAccordion"
+          >
+            <nav className="sb-sidenav-menu-nested nav">
+              <Link className="nav-link" to="/admin/add_product">
+                Add New Product
+              </Link>
+              <Link className="nav-link" to="/admin/view_product">
+                View Product
+              </Link>
+            </nav>
+          </div>
+
+
           <div className="sb-sidenav-menu-heading">Interface</div>
           <Link
             className="nav-link collapsed"
