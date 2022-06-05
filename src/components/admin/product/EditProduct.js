@@ -24,9 +24,6 @@ const EditProduct = (props) => {
         original_price: '',
         qty: '',
         brand: '',
-        featured: '',
-        popular: '',
-        status: '',
     });
     const [picture, setPicture] = useState([]);
 
@@ -37,6 +34,12 @@ const EditProduct = (props) => {
 
     const handleImage = (event) => {
         setPicture({image: event.target.files[0]});
+    }
+
+    const [allcheckbox, setCheckboxs] = useState([]);
+    const handleCheckbox = (event) => {
+        event.persist();
+        setCheckboxs({...allcheckbox, [event.target.name] : event.target.checked});
     }
 
     useEffect(() => {
@@ -50,6 +53,7 @@ const EditProduct = (props) => {
        axios.get(`/api/edit_product/${product_id}`).then(response => {
            if(response.data.status === 200){
                setProduct(response.data.product);
+               setCheckboxs(response.data.product);
            }
            else if(response.data.status === 404){
                swal("Error", response.data.message, 'error');
@@ -80,13 +84,14 @@ const EditProduct = (props) => {
         formData.append('original_price', productInput.original_price);
         formData.append('qty', productInput.qty);
         formData.append('brand', productInput.brand);
-        formData.append('featured', productInput.featured);
-        formData.append('popular', productInput.popular);
-        formData.append('status', productInput.status);
+        formData.append('featured', allcheckbox.featured ? '1' : '0');
+        formData.append('popular', allcheckbox.popular ? '1' : '0');
+        formData.append('status', allcheckbox.status ? '1' : '0');
 
         axios.post(`/api/update_product/${product_id}`, formData).then(response => {
             if(response.data.status === 200){
                 swal("Success", response.data.message, "success");
+                console.log(allcheckbox);
                 setError([]);
             }
             else if(response.data.status === 422){
@@ -202,15 +207,15 @@ const EditProduct = (props) => {
       </div>
       <div className="col-md-4 form-group mb-3">
           <label>Featured (checked=shown)</label>
-          <input type="checkbox" name="featured" onChange={handleInput} value={productInput.featured} className="w-50 h-50" />
+          <input type="checkbox" name="featured" onChange={handleCheckbox} defaultChecked={allcheckbox.featured === 1 ? true:false} className="w-50 h-50" />
       </div>
       <div className="col-md-4 form-group mb-3">
           <label>Popular (checked=shown)</label>
-          <input type="checkbox" name="popular" onChange={handleInput} value={productInput.popular} className="w-50 h-50" />
+          <input type="checkbox" name="popular" onChange={handleCheckbox} defaultChecked={allcheckbox.popular === 1 ? true:false} className="w-50 h-50" />
       </div>
       <div className="col-md-4 form-group mb-3">
           <label>Status (checked=hidden)</label>
-          <input type="checkbox" name="status" onChange={handleInput} value={productInput.status} className="w-50 h-50" />
+          <input type="checkbox" name="status" onChange={handleCheckbox} defaultChecked={allcheckbox.status === 1 ? true:false} className="w-50 h-50" />
       </div>
       </div>
   </div>
